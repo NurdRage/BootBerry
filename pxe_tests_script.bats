@@ -2,8 +2,8 @@
 
 # Test script for PXE Boot Server setup for Raspberry Pi 5
 
-load "/usr/local/lib/bats/bats-support/load.bash"
-load "/usr/local/lib/bats/bats-assert/load.bash"
+load "/home/cloudsick-pi/BootBerry/bats/bats-support/load.bash"
+load "/home/cloudsick-pi/BootBerry/bats/bats-assert/load.bash"
 
 # Mock functions for testing purposes
 setup() {
@@ -21,7 +21,7 @@ setup() {
 
 # Test: Check root privileges
 @test "Check script requires root privileges" {
-  run bash pxe_setup_script.sh
+  run bash ./pxe_setup_script.sh
   [ "$status" -eq 1 ]
   [[ "$output" == *"Please run as root or use sudo"* ]]
 }
@@ -86,4 +86,3 @@ setup() {
   [ "$status" -eq 0 ]
   assert_output --partial "Restarting dnsmasq..."
 }
-
