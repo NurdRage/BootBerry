@@ -21,7 +21,7 @@ setup() {
 
 # Test: Check root privileges
 @test "Check script requires root privileges" {
-  run bash ./pxe_setup_script.sh
+  run bash ./pxe_setup.sh
   [ "$status" -eq 1 ]
   [[ "$output" == *"Please run as root or use sudo"* ]]
 }
@@ -51,7 +51,7 @@ setup() {
 
 # Test: Firewall configuration
 @test "Configure firewall rules" {
-  run bash pxe_setup_script.sh configure_firewall
+  run bash ./pxe_setup.sh configure_firewall
   [ "$status" -eq 0 ]
   assert_output --partial "Configuring firewall rules..."
 }
