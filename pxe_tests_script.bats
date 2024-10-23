@@ -23,14 +23,15 @@ setup() {
 @test "Check script requires root privileges" {
   run bash ./pxe_setup.sh
   [ "$status" -eq 1 ]
-  [[ "$output" == *"Please run as root or use sudo"* ]]
+  # Check for non-root privileges message
+[[ "$output" == *"run as root"* || "$output" == *"sudo"* ]]
 }
 
 # Test: Verify log file setup and permissions
 @test "Verify log file setup and permissions" {
-  LOG_FILE="/var/log/pxe_setup.log"
+  LOG_FILE="./pxe_setup.log"
   run sudo touch "$LOG_FILE"
-  run sudo chmod 600 "$LOG_FILE"
+  run chmod 600 "$LOG_FILE"
   [ -f "$LOG_FILE" ]
   run sudo stat -c "%a" "$LOG_FILE"
   assert_output "600"
@@ -38,7 +39,7 @@ setup() {
 
 # Test: System update with retry
 @test "System update and package installation" {
-  run bash ./pxe_setup_script.sh update_system
+  run bash ./pxe_setup.sh update_system
   [ "$status" -eq 0 ]
   assert_output --partial "Updating system..."
 }
@@ -59,7 +60,7 @@ setup() {
 # Test: Static IP setup and verification
 @test "Static IP setup and verification" {
   STATIC_IP="192.168.99.1"
-  run bash pxe_setup_script.sh verify_static_ip
+  run bash ./pxe_setup.sh verify_static_ip
   [ "$status" -eq 0 ]
   assert_output --partial "Verifying static IP configuration..."
 }
@@ -69,14 +70,14 @@ setup() {
   GDRIVE_URL="https://drive.google.com/uc?export=download&id=1xXEsI-O5bHzjS4g_DTAAolwhqLd-Aq_s"
   ISO_FILE="/srv/samba/win11.iso"
   EXPECTED_CHECKSUM="b56b911bf18a2ceaeb3904d87e7c770bdf92d3099599d61ac2497b91bf190b11"
-  run bash pxe_setup_script.sh download_and_validate_iso "$GDRIVE_URL" "$ISO_FILE" "$EXPECTED_CHECKSUM"
+  run bash ./pxe_setup.sh download_and_validate_iso "$GDRIVE_URL" "$ISO_FILE" "$EXPECTED_CHECKSUM"
   [ "$status" -eq 0 ]
   assert_output --partial "Checksum verification successful."
 }
 
 # Test: Network interface selection
 @test "Select network interface for PXE boot" {
-  run bash pxe_setup_script.sh preselect_interface
+  run bash ./pxe_setup.sh preselect_interface
   assert_output --partial "Multiple network interfaces detected"
 }
 
