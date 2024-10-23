@@ -38,14 +38,14 @@ setup() {
 
 # Test: System update with retry
 @test "System update and package installation" {
-  run bash pxe_setup_script.sh update_system
+  run bash ./pxe_setup_script.sh update_system
   [ "$status" -eq 0 ]
   assert_output --partial "Updating system..."
 }
 
 # Test: Samba password non-interactive setup
 @test "Samba password non-interactive setup" {
-  run bash pxe_setup_script.sh set_samba_password
+  run bash ./pxe_setup.sh set_samba_password
   assert_output --partial "Setting Samba password for user 'pxeuser'"
 }
 
