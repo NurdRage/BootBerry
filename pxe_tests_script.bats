@@ -2,8 +2,8 @@
 
 # Test script for PXE Boot Server setup for Raspberry Pi 5
 
-load "/usr/local/lib/bats-support/load.bash"
-load "/usr/local/lib/bats-assert/load.bash"
+load "/usr/local/lib/bats/bats-support/load.bash"
+load "/usr/local/lib/bats/bats-assert/load.bash"
 
 # Mock functions for testing purposes
 setup() {
