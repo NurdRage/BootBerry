@@ -14,7 +14,6 @@ setup() {
   }
   # Mock sudo to bypass privilege requirements during testing
   sudo() {
-    echo "[MOCK] sudo command"
     "$@"
   }
 }
@@ -24,7 +23,7 @@ setup() {
   run bash ./pxe_setup.sh
   [ "$status" -eq 1 ]
   # Check for non-root privileges message
-[[ "$output" == *"run as root"* || "$output" == *"sudo"* ]]
+\[ \"\$output\" == *\"run as root\"* \]
 }
 
 # Test: Verify log file setup and permissions
@@ -83,7 +82,7 @@ setup() {
 
 # Test: Service restart with retries
 @test "Restart services with retry mechanism" {
-  run bash pxe_setup_script.sh restart_service_with_retries dnsmasq
+  run bash ./pxe_setup.sh restart_service_with_retries dnsmasq
   [ "$status" -eq 0 ]
   assert_output --partial "Restarting dnsmasq..."
 }
